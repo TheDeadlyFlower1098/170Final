@@ -34,6 +34,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
+                    <!-- Display user's name -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Welcome, {{ session.get('user_name') }}</a>  <!-- Use user_name from session -->
+                    </li>
                 {% else %}
                     <!-- Not Logged In -->
                     <li class="nav-item">
