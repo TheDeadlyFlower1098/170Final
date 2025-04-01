@@ -3,12 +3,11 @@ from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine, text
 import hashlib
 
-
-app = Flask(__name__) 
+app = Flask(__name__)
 
 con_str = "mysql://root:cset155@localhost/bank"
 engine = create_engine(con_str, echo=True)
-conn = engine.connect() 
+conn = engine.connect()
 
 @app.route('/signup', methods=['GET'])
 def signup_page():
@@ -49,42 +48,42 @@ def create_user():
 @app.route('/login', methods=['GET'])
 def login_page():
      return render_template('login.html')
- 
- 
+
 @app.route('/login', methods=['POST'])
 def login_user():
-     try:
-         username = request.form['username']
-         password = request.form['password']
- 
-         print(f"Received email: '{username}'")
-         print(f"Received password: '{password}'")
- 
-         result = conn.execute(
-             text('SELECT * FROM users WHERE username = :username'),
-             {'username': username}
-         ).fetchone()
- 
-         print(f"Query result: {result}")
- 
-         if result:
-             stored_password = result[8]
-             print(f"Stored password: '{stored_password}'")
- 
-             if stored_password.strip() == password.strip():
-                 print("Login successful")
-                 return render_template('home.html')
-             else:
-                 print("Password mismatch")
-                 return render_template('login.html', error="Invalid password", success=None)
-         else:
-             print("User not found")
-             return render_template('login.html', error="User not found", success=None)
- 
-     except Exception as e:
-         print(f"Error occurred during login: {e}")
-         return render_template('login.html', error="Login failed. Please try again.", success=None)
+    try:
+        username = request.form['username']
+        password = request.form['password_hash']
 
+        print(f"Received username: '{username}'")
+        print(f"Received password: '{password}'")
+
+        # Fetch the user from the database
+        result = conn.execute(
+            text('SELECT password_hash FROM users WHERE username = :username'),
+            {'username': username}
+        ).fetchone()
+
+        if result:
+            stored_password_hash = result[0]  # Assuming password_hash is the first column in the result
+            print(f"Stored password hash: '{stored_password_hash}'")
+
+            # Hash the entered password and compare with the stored hash
+            hashed_input_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+            if stored_password_hash == hashed_input_password:
+                print("Login successful")
+                return render_template('home.html')
+            else:
+                print("Password mismatch")
+                return render_template('login.html', error="Invalid password", success=None)
+        else:
+            print("User not found")
+            return render_template('login.html', error="User not found", success=None)
+
+    except Exception as e:
+        print(f"Error occurred during login: {e}")
+        return render_template('login.html', error="Login failed. Please try again.", success=None)
 
 @app.route('/')
 def home():
