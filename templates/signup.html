@@ -1,41 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <style>
-        .input_field {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-        }
-        .input_submit {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .input_submit:hover {
-            background-color: #45a049;
-        }
-        .alert {
-            padding: 10px;
-            color: white;
-            margin-bottom: 10px;
-        }
-        .alert-success {
-            background-color: green;
-        }
-        .alert-error {
-            background-color: red;
-        }
-    </style>
+    <title>Sign Up</title><link rel="stylesheet" href="../static/styles/base.css">
 </head>
-<body>
+<body class="background">
 
-    <div class="body">
+    <header class="header2">
+        <img class="logo2" src="static/images/f2dc121e-8d95-4cfd-8acd-8d548a843c1c.png" alt="" srcset="">
+        <h1 style="color: aliceblue;">Flask Banking</h1>
+
+    </header>
+
+    <div class="body1">
         <form class="signup_input" action="/signup" method="POST">
             <h1>SIGN UP</h1>
 
@@ -66,7 +44,7 @@
             <p>Enter password:</p>
             <input type="password" name="password_hash" placeholder="Password" class="input_field"> <br>
 
-            <a href="/login">Click here to log in</a> <br><br>
+            <a class="login-link" href="/login">Click here to log in</a> <br><br>
 
             <input type="submit" value="Submit" class="input_submit">
         </form>

@@ -1,0 +1,125 @@
+.background{
+    background-image: url(../images/R.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.header2{
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    background-color: #364453;
+    align-items: center;
+    height: 90px;
+    margin-bottom: 50px;
+}
+
+.logo2{
+    width: 80x;
+    height: 80%;
+    margin-right: 10px;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.body1 {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;     
+    height: 100%;         
+    text-align: center;     
+}
+
+
+.signup_input {
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input_field {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.input_submit {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #0b5cb3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login_link{
+    text-decoration: none;
+    color: #721c24;
+}
+
+.login_btn:hover{
+    text-decoration: underline;
+}
+
+.input_submit:hover {
+    background-color: #013164;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+body {
+    align-items: center;
+        font-family: Arial, sans-serif;
+    }
+
+ .navbar {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f8f9fa;
+    }
+
+    .alert {
+        margin-top: 20px;
+    }
+    
+    .navbar-brand img {
+        width: 40px;
+        height: auto;
+        margin-right: 10px;
+    }

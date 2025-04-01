@@ -1,11 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html" %}
+ 
+ {% block content %}
+ <!-- Hero Section -->
+ <div class="jumbotron jumbotron-fluid bg-primary text-white">
+     <div class="container text-center">
+         <h1 class="display-4">Welcome to Flask Banking</h1>
+         <p class="lead">Secure, Simple, and Reliable Banking Solutions</p>
+     </div>
+ </div>
+ 
+ <!-- Bank Services Section -->
+ <div class="container">
+     <h2 class="text-center my-4">Our Services</h2>
+     <div class="row">
+         <div class="col-md-4">
+             <div class="card">
+                 <div class="card-body">
+                     <h5 class="card-title">Account Management</h5>
+                     <p class="card-text">Manage your personal banking accounts with ease. View balances, track transactions, and transfer money seamlessly.</p>
+                     <a href="/signup" class="btn btn-primary">Create an Account</a>
+                 </div>
+             </div>
+         </div>
+         <div class="col-md-4">
+             <div class="card">
+                 <div class="card-body">
+                     <h5 class="card-title">Secure Transactions</h5>
+                     <p class="card-text">Send and receive money with complete security. Our bank guarantees safe and fast transfers.</p>
+                     <a href="/login" class="btn btn-primary">Log In to Your Account</a>
+                 </div>
+             </div>
+         </div>
+         <div class="col-md-4">
+             <div class="card">
+                 <div class="card-body">
+                     <h5 class="card-title">Customer Support</h5>
+                     <p class="card-text">Need assistance? Our dedicated customer support team is here to help with all your banking needs.</p>
+                     <a href="#" class="btn btn-primary">Contact Support</a>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ 
+ <!-- About the Bank Section -->
+ <div class="container my-5">
+     <h2 class="text-center">About Us</h2>
+     <p class="text-center">
+         At Flask Banking, we strive to provide simple and secure financial services for everyone. Our goal is to help you manage your finances with ease, offering 24/7 access to your accounts, convenient ways to transfer money, and a secure banking experience.
+     </p>
+     <p class="text-center">
+         Whether you're looking to open your first account, transfer money between friends, or simply check your balance, Flask Banking is here to make banking easy and reliable.
+     </p>
+ </div>
+ 
+ <!-- Call to Action Section -->
+ <div class="bg-dark text-white py-5">
+     <div class="container text-center">
+         <h3 class="display-4">Start Banking with Us Today!</h3>
+         <p class="lead">Create an account, and experience the easiest way to manage your money.</p>
+         <a href="/register" class="btn btn-light btn-lg">Get Started</a>
+     </div>
+ </div>
+ {% endblock %}
