@@ -6,36 +6,7 @@
     <title>Flask Banking App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .navbar {
-            margin-bottom: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f8f9fa;
-        }
-
-        .alert {
-            margin-top: 20px;
-        }
-        
-        .navbar-brand img {
-            width: 40px;  /* Adjust the logo size as needed */
-            height: auto;
-            margin-right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/styles/base.css">
 </head>
 <body>
 
@@ -88,10 +59,10 @@
             </div>
         {% endif %}
     {% endwith %}
-    {% block content %}
-    <!-- Page-specific content will go here -->
-    {% endblock %}
 </div>
+{% block content %}
+<!-- Page-specific content will go here -->
+{% endblock %}
 
 <!-- Footer -->
 <div class="footer">
