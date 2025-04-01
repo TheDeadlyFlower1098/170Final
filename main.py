@@ -11,8 +11,6 @@ con_str = "mysql://root:cset155@localhost/bank"
 engine = create_engine(con_str, echo=True)
 conn = engine.connect()
 
-app.secret_key = 'your_secret_key'
-
 @app.route('/signup', methods=['GET'])
 def signup_page():
     return render_template('signup.html')

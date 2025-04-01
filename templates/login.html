@@ -1,97 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../static/styles/base.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        .login-container {
-            background: white;
-            padding: 40px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
-        }
-        .login-container h1 {
-            text-align: center;
-        }
-        .input_field {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .input_submit {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .input_submit:hover {
-            background-color: #0056b3;
-        }
-        .alert-error {
-            color: red;
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .alert-success {
-            color: green;
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .back-to-signup {
-            text-align: center;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <div class="login-container">
-        <h1>Login</h1>
-
-        {% if error %}
-            <div class="alert alert-error">{{ error }}</div>
-        {% elif success %}
-            <div class="alert alert-success">{{ success }}</div>
-        {% endif %}
-
-        <form action="/login" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" class="input_field" required>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password_hash" placeholder="Enter your password" class="input_field" required>
-
-            <input type="submit" value="Login" class="input_submit">
-        </form>
-
-        <div class="back-to-signup">
-            <p>Don't have an account? <a href="/signup">Sign up here</a></p>
-        </div>
-    </div>
-
-</body>
-</html>
-
-
+{% block content %}
+     <div class="body">
+         {% if error %}
+             <h2>{{ error }}</h2>
+         {% endif %}
+         {% if success %}
+             <h2>{{ success }}</h2>
+         {% endif %}
+ 
+         <form class="login_input" action="/login" method="POST">
+             <h1>LOG IN</h1>
+             <p>Enter username:</p>
+             <input type="text" name="username" placeholder="username" class="input_field" required> <br>
+             <p>Enter password:</p>
+             <input type="password" name="password" placeholder="password" class="input_field" required> <br>
+ 
+             <input type="submit" value="Log In" class="input_submit">
+         </form>
+         
+         <p>Don't have an account? <a href="/signup">Click here to sign up</a></p>
+     </div>
+ {% endblock %}
