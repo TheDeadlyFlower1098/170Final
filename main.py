@@ -90,6 +90,38 @@ def login_user():
 @app.route('/')
 def home():
     return render_template('home.html')
+@app.route('/admin_login', methods=['GET'])
+def admin_login_page():
+    return render_template('admin_login.html')
+
+@app.route('/admin_login', methods=['POST'])
+def admin_login():
+    try:
+        # Get the username and password from the form
+        username = request.form['username']
+        password = request.form['password_hash']  # Password entered by the user (plaintext)
+
+        # Query the database to find the admin with the provided username
+        result = conn.execute(
+            text('SELECT * FROM admin WHERE username = :username'),
+            {'username': username}
+        ).fetchone()
+
+        if result:
+            stored_password = result['password_hash']  # Get the stored password (plaintext)
+
+            # Check if the provided password matches the stored password
+            if stored_password == password:
+                return redirect(url_for('admin_dashboard'))  # Redirect to admin dashboard on success
+            else:
+                return render_template('admin_login.html', error="Invalid password", success=None)
+        else:
+            return render_template('admin_login.html', error="Admin not found", success=None)
+
+    except Exception as e:
+        print(f"Error during login: {e}")
+        return render_template('admin_login.html', error="Login failed. Please try again.", success=None)
+
 
 # Route to show user's account details
 @app.route('/account')
