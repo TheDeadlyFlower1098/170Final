@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+ 
+ {% block body %}
+     <div class="body">
+         {% if error %}
+             <h2>{{ error }}</h2>
+         {% endif %}
+         {% if success %}
+             <h2>{{ success }}</h2>
+         {% endif %}
+ 
+         <form class="login_input" action="/login" method="POST">
+             <h1>LOG IN</h1>
+             <p>Enter username:</p>
+             <input type="text" name="username" placeholder="username" class="input_field" required> <br>
+             <p>Enter password:</p>
+             <input type="password" name="password" placeholder="password" class="input_field" required> <br>
+ 
+             <input type="submit" value="Log In" class="input_submit">
+         </form>
+         
+         <p>Don't have an account? <a href="/signup">Click here to sign up</a></p>
+     </div>
+ {% endblock %}

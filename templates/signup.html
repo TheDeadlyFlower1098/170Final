@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title><link rel="stylesheet" href="../static/styles/base.css">
+</head>
+<body class="background">
+
+    <header class="header2">
+        <img class="logo2" src="static/images/f2dc121e-8d95-4cfd-8acd-8d548a843c1c.png" alt="" srcset="">
+        <h1 style="color: aliceblue;">Flask Banking</h1>
+
+    </header>
+
+    <div class="body1">
+        <form class="signup_input" action="/signup" method="POST">
+            <h1>SIGN UP</h1>
+
+            {% if success %}
+                <div class="alert alert-success">{{ success }}</div>
+            {% elif error %}
+                <div class="alert alert-error">{{ error }}</div>
+            {% endif %}
+
+            <p>Enter first name:</p>
+            <input type="text" name="first_name" placeholder="First name" class="input_field"> <br>
+
+            <p>Enter last name:</p>
+            <input type="text" name="last_name" placeholder="Last name" class="input_field"> <br>
+
+            <p>Enter username:</p>
+            <input type="text" name="username" placeholder="Username" class="input_field"> <br>
+
+            <p>Enter SSN:</p>
+            <input type="text" name="ssn" placeholder="SSN" class="input_field"> <br>
+
+            <p>Enter address:</p>
+            <input type="text" name="address" placeholder="Address" class="input_field"> <br>
+
+            <p>Enter phone number:</p>
+            <input type="text" name="phone_number" placeholder="Phone number" class="input_field"> <br>
+
+            <p>Enter password:</p>
+            <input type="password" name="password_hash" placeholder="Password" class="input_field"> <br>
+
+            <a class="login-link" href="/login">Click here to log in</a> <br><br>
+
+            <input type="submit" value="Submit" class="input_submit">
+        </form>
+    </div>
+
+</body>
+</html>
+
