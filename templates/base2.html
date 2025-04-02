@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="path/to/your/styles.css"> 
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Dashboard</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('view_users') }}">View Users</a></li>
+            <li><a href="{{ url_for('approve_users') }}">Approve Users</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </div>
+
+
+    <div class="main-content">
+        <div class="navbar">
+            <span>Welcome, Admin</span>
+            <span class="logout-link"><a href="{{ url_for('logout') }}">Logout</a></span>
+        </div>
+
+        {% if success %}
+            <div class="alert alert-success">{{ success }}</div>
+        {% elif error %}
+            <div class="alert alert-error">{{ error }}</div>
+        {% endif %}
+
+        <div class="content-container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Your Company. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
+
+</body>
+</html>
