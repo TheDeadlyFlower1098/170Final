@@ -11,6 +11,13 @@ con_str = "mysql://root:cset155@localhost/bank"
 engine = create_engine(con_str, echo=True)
 conn = engine.connect()
 
+app.secret_key = 'your_secret_key_here'
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+
 @app.route('/signup', methods=['GET'])
 def signup_page():
     return render_template('signup.html')
@@ -37,11 +44,11 @@ def create_user():
             text('INSERT INTO users (first_name, last_name, password_hash, username, address, phone_number, ssn) '
                  'VALUES (:first_name, :last_name, :password_hash, :username, :address, :phone_number, :ssn)'),
             {'first_name': first_name, 'last_name': last_name, 'password_hash': hashed_password, 'username': username,
-             'address': address, 'phone_number': phone_number, 'ssn': ssn}
+             'address': address, 'phone_number': phone_number, 'ssn': ssn, 'approved':'false'}
         )
         conn.commit()
 
-        return render_template('signup.html', error=None, success='Signup successful')
+        return render_template('signup.html', error=None, success='Signup successful wait for account to be approved')
 
     except Exception as e:
         print(f"Error occurred during signup: {e}")
@@ -49,7 +56,7 @@ def create_user():
 
 @app.route('/login', methods=['GET'])
 def login_page():
-     return render_template('login.html')
+    return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
 def login_user():
@@ -57,80 +64,81 @@ def login_user():
         username = request.form['username']
         password = request.form['password_hash']
 
-        print(f"Received username: '{username}'")
-        print(f"Received password: '{password}'")
-
         # Fetch the user from the database
         result = conn.execute(
-            text('SELECT password_hash FROM users WHERE username = :username'),
+            text('SELECT user_id, password_hash, approved FROM users WHERE username = :username'),
             {'username': username}
         ).fetchone()
 
         if result:
-            stored_password_hash = result[0]  # Assuming password_hash is the first column in the result
-            print(f"Stored password hash: '{stored_password_hash}'")
+            stored_password_hash = result['password_hash']
+            is_approved = result['approved']
+            user_id = result['user_id']
 
-            # Hash the entered password and compare with the stored hash
+            if not is_approved:
+                return render_template('login.html', error="Your account is not approved yet.")
+
+            # Hash the entered password and compare
             hashed_input_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
             if stored_password_hash == hashed_input_password:
+                # Store user_id in session
+                session['user_id'] = user_id  # Save user_id in the session
+                session['username'] = username  # Optionally store the username
+                return redirect(url_for('account'))  # Redirect to account page
+            else:
+                return render_template('login.html', error="Invalid password")
+
+        else:
+            return render_template('login.html', error="User not found")
+
+    except Exception as e:
+        return render_template('login.html', error="Login failed. Please try again.")
+
+    
+@app.route('/admin_login', methods=['GET'])
+def login_adminpage():
+    return render_template('admin_login.html')
+
+@app.route('/admin_login', methods=['POST'])
+def login_admin():
+    try:
+        username = request.form['username']
+        password = request.form['password_hash']
+
+        print(f"Received username: '{username}'")
+        print(f"Received password: '{password}'")
+
+        result = conn.execute(
+            text('SELECT username, password_hash FROM admin WHERE username = :username'),
+            {'username': username}
+        ).fetchone()
+
+        if result:
+            stored_username, stored_password = result
+            print(f"Stored username: '{stored_username}'")
+            print(f"Stored password: '{stored_password}'")
+
+            if stored_password == password:
                 print("Login successful")
                 return render_template('home.html')
             else:
                 print("Password mismatch")
-                return render_template('login.html', error="Invalid password", success=None)
+                return render_template('admin_login.html', error="Invalid password", success=None)
         else:
             print("User not found")
-            return render_template('login.html', error="User not found", success=None)
+            return render_template('admin_login.html', error="User not found", success=None)
 
     except Exception as e:
         print(f"Error occurred during login: {e}")
-        return render_template('login.html', error="Login failed. Please try again.", success=None)
-
-@app.route('/')
-def home():
-    return render_template('home.html')
-@app.route('/admin_login', methods=['GET'])
-def admin_login_page():
-    return render_template('admin_login.html')
-
-@app.route('/admin_login', methods=['POST'])
-def admin_login():
-    try:
-        # Get the username and password from the form
-        username = request.form['username']
-        password = request.form['password_hash']  # Password entered by the user (plaintext)
-
-        # Query the database to find the admin with the provided username
-        result = conn.execute(
-            text('SELECT * FROM admin WHERE username = :username'),
-            {'username': username}
-        ).fetchone()
-
-        if result:
-            stored_password = result['password_hash']  # Get the stored password (plaintext)
-
-            # Check if the provided password matches the stored password
-            if stored_password == password:
-                return redirect(url_for('admin_dashboard'))  # Redirect to admin dashboard on success
-            else:
-                return render_template('admin_login.html', error="Invalid password", success=None)
-        else:
-            return render_template('admin_login.html', error="Admin not found", success=None)
-
-    except Exception as e:
-        print(f"Error during login: {e}")
         return render_template('admin_login.html', error="Login failed. Please try again.", success=None)
 
-
-# Route to show user's account details
 @app.route('/account')
 def account():
     if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
+        return redirect(url_for('login_page'))  # Redirect to login page if user is not logged in
 
     user_id = session['user_id']
-    # Query user data
     query = text("SELECT * FROM users WHERE user_id = :user_id")
     result = conn.execute(query, user_id=user_id).fetchone()
 
@@ -150,11 +158,11 @@ def account():
         flash('User not found', 'danger')
         return redirect(url_for('home'))
 
-# Route to handle adding money to the account
+
 @app.route('/add_money', methods=['GET', 'POST'])
 def add_money():
     if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
+        return redirect(url_for('login_page'))  # Redirect if not logged in
 
     if request.method == 'POST':
         user_id = session['user_id']
@@ -195,25 +203,6 @@ def add_money():
 
     return render_template('add_money.html')
 
-# Route for user login
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        query = text("SELECT * FROM users WHERE username = :username")
-        result = conn.execute(query, username=username).fetchone()
-
-        if result and check_password_hash(result['password_hash'], password):
-            session['user_id'] = result['user_id']
-            session['username'] = result['username']
-            session['account_number'] = result['account_number']
-            return redirect(url_for('home'))
-        else:
-            flash('Invalid credentials', 'danger')
-
-    return render_template('login.html')
 
 # Route for user logout
 @app.route('/logout')
@@ -223,5 +212,34 @@ def logout():
     session.pop('account_number', None)
     return redirect(url_for('home'))
   
+@app.route('/admin/approve_users', methods=['GET'])
+def approve_users_page():
+    try:
+        result = conn.execute(
+            text('SELECT * FROM users WHERE approved = FALSE')
+        ).fetchall()
+        
+        return render_template('approve_users.html', users=result)
+    
+    except Exception as e:
+        print(f"Error fetching users: {e}")
+        return render_template('admin_dashboard.html', error="Could not fetch unapproved users.", success=None)
+
+@app.route('/admin/approve_user/<int:user_id>', methods=['POST'])
+def approve_user(user_id):
+    try:
+        conn.execute(
+            text('UPDATE users SET approved = TRUE WHERE user_id = :user_id'),
+            {'user_id': user_id}
+        )
+        conn.commit()
+
+        return redirect(url_for('approve_users_page'))
+
+    except Exception as e:
+        print(f"Error approving user: {e}")
+        return redirect(url_for('approve_users_page'), error="Could not approve user.")
+
+
 if __name__ == '__main__':
     app.run(debug=True)

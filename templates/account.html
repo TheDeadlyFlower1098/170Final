@@ -1,30 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Account - Flask Banking App</title>
-</head>
-<body>
-    <h1>Welcome, {{ user_info.first_name }} {{ user_info.last_name }}</h1>
-    <p>Username: {{ user_info.username }}</p>
-    <p>Account Number: {{ user_info.account_number }}</p>
-    <p>Balance: ${{ user_info.balance }}</p>
-    <p>SSN: {{ user_info.ssn }}</p>
-    <p>Address: {{ user_info.address }}</p>
-    <p>Phone: {{ user_info.phone_number }}</p>
+{% extends "base.html" %}
 
-    <h2>Add Money to Your Account</h2>
-    <form action="{{ url_for('add_money') }}" method="POST">
-        <label for="card_number">Card Number:</label>
-        <input type="text" name="card_number" id="card_number" required><br>
-        <label for="expiry_date">Expiry Date:</label>
-        <input type="month" name="expiry_date" id="expiry_date" required><br>
-        <label for="ccv">CCV:</label>
-        <input type="text" name="ccv" id="ccv" required><br>
-        <label for="amount">Amount:</label>
-        <input type="number" name="amount" id="amount" required><br>
-        <button type="submit">Add Money</button>
-    </form>
-</body>
-</html>
+{% block content %}
+    <div class="container">
+        <h1>Welcome, {{ user_info.first_name }} {{ user_info.last_name }}</h1>
+        <p>Username: {{ user_info.username }}</p>
+        <p>Account Number: {{ user_info.account_number }}</p>
+        <p>Balance: ${{ user_info.balance }}</p>
+        <p>SSN: {{ user_info.ssn }}</p>
+        <p>Address: {{ user_info.address }}</p>
+        <p>Phone: {{ user_info.phone_number }}</p>
+
+        <h2>Add Money to Your Account</h2>
+        <form action="{{ url_for('add_money') }}" method="POST">
+            <label for="card_number">Card Number:</label>
+            <input type="text" name="card_number" id="card_number" required><br>
+            <label for="expiry_date">Expiry Date:</label>
+            <input type="month" name="expiry_date" id="expiry_date" required><br>
+            <label for="ccv">CCV:</label>
+            <input type="text" name="ccv" id="ccv" required><br>
+            <label for="amount">Amount:</label>
+            <input type="number" name="amount" id="amount" required><br>
+            <button type="submit">Add Money</button>
+        </form>
+    </div>
+{% endblock %}
