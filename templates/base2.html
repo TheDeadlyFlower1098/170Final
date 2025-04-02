@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="../static/styles/base2.css">
+</head>
+<body>
+
+    <div class="b2-sidebar">
+        <div class="b2-sidebar-header">
+            <img src="../static/images/f2dc121e-8d95-4cfd-8acd-8d548a843c1c.png" alt="logo" srcset="">
+            <h3>Flask Bank</h3>
+            <h2>Admin Dashboard</h2>
+        </div>
+        <ul class="b2-sidebar-nav">
+            <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+            <li><a href="/admin/approve_users">Approve Users</a></li>
+            <li><a href="/admin/view_users">all Users</a></li>
+            <li><a href="/">Logout</a></li>
+        </ul>
+    </div>
+
+
+    <div class="b2-main-content">
+        <div class="b2-navbar">
+            <span>Welcome, Admin</span>
+            <span class="b2-logout-link"><a href="{{ url_for('logout') }}">Logout</a></span>
+        </div>
+        <div class="b2-container">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <footer class="b2-footer">
+        <p>&copy; 2025 Your Company. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

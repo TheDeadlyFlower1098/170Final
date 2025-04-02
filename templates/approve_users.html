@@ -1,0 +1,53 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+    <div class="b2-container admin-approval-container">
+        <h1 class="b2-text-center">Approve User Accounts</h1>
+
+        {% if error %}
+            <div class="b2-alert b2-alert-error">{{ error }}</div>
+        {% elif success %}
+            <div class="b2-alert b2-alert-success">{{ success }}</div>
+        {% endif %}
+
+        <p>Users count: {{ users | length }}</p>
+        <div class="b2-table-container">
+            <table class="b2-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                        <th>SSN</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
+                        <th>Date Created</th>
+                        <th>Account Number</th>
+                        <th>Approve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.user_id }}</td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.ssn }}</td>
+                            <td>{{ user.address }}</td>
+                            <td>{{ user.phone_number }}</td>
+                            <td>{{ user.created_at }}</td>
+                            <td>{{ user.approved }}</td>
+                            <td>
+                                <form action="{{ url_for('approve_user', user_id=user.user_id) }}" method="POST">
+                                    <input type="submit" value="Approve" class="b2-btn b2-btn-primary">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

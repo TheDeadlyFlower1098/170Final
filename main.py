@@ -1,8 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from sqlalchemy import create_engine, text
-from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
-import random
 import hashlib
 
 app = Flask(__name__)
@@ -61,26 +58,30 @@ def login_page():
 @app.route('/login', methods=['POST'])
 def login_user():
     try:
+        # Get username and password from form
         username = request.form['username']
-        password = request.form['password_hash']
-
-        # Fetch the user from the database
-        result = conn.execute(
-            text('SELECT user_id, password_hash, approved FROM users WHERE username = :username'),
+        password = request.form['password_hash']  # The plain text password entered by the user
             {'username': username}
         ).fetchone()
 
         if result:
-            stored_password_hash = result['password_hash']
-            is_approved = result['approved']
-            user_id = result['user_id']
+            # Extract stored password hash and approval status from the result
+            stored_password_hash = result[0]
+            is_approved = result[1]
+            print(f"Stored password hash: '{stored_password_hash}'")
+            print(f"User approved: {is_approved}")
 
+            # **Check if the user is approved**
             if not is_approved:
-                return render_template('login.html', error="Your account is not approved yet.")
+                print("User not approved")
+                return render_template('login.html', error="Your account is not approved yet.", success=None)
 
-            # Hash the entered password and compare
+            # **Only check password if the user is approved**
+            # Hash the entered password using sha256 to match the stored hash
             hashed_input_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            print(f"Hashed entered password: '{hashed_input_password}'")
 
+            # Compare hashed password
             if stored_password_hash == hashed_input_password:
                 # Store user_id in session
                 session['user_id'] = user_id  # Save user_id in the session
@@ -121,7 +122,7 @@ def login_admin():
 
             if stored_password == password:
                 print("Login successful")
-                return render_template('home.html')
+                return render_template('admin_dashboard.html')
             else:
                 print("Password mismatch")
                 return render_template('admin_login.html', error="Invalid password", success=None)
@@ -157,8 +158,7 @@ def account():
     else:
         flash('User not found', 'danger')
         return redirect(url_for('home'))
-
-
+      
 @app.route('/add_money', methods=['GET', 'POST'])
 def add_money():
     if 'user_id' not in session:
@@ -239,7 +239,24 @@ def approve_user(user_id):
     except Exception as e:
         print(f"Error approving user: {e}")
         return redirect(url_for('approve_users_page'), error="Could not approve user.")
+      
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    return render_template('admin_dashboard.html')
 
+
+@app.route('/admin/view_users', methods=['GET'])
+def view_users():
+    try:
+        # Query to get all users
+        users = conn.execute(text('SELECT * FROM users')).fetchall()
+
+        return render_template('view_users.html', users=users)
+
+    except Exception as e:
+        print(f"Error fetching users: {e}")
+        return render_template('admin_dashboard.html', error="Could not fetch users.", success=None)
 
 if __name__ == '__main__':
     app.run(debug=True)
+

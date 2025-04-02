@@ -1,0 +1,50 @@
+{% extends 'base2.html' %}
+
+{% block title %}View Users{% endblock %}
+
+{% block content %}
+<div class="view-users-container">
+    <h1>View Users</h1>
+
+    {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+    {% elif success %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+
+    <table class="b2-table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+                <th>address</th>
+                <th>Phone Number</th>
+                <th>Date Created</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.phone_number }}</td>
+                <td>{{ user.created_at }}</td>
+                <td>
+                    {% if user.approved %}
+                        <span class="status-approved">Approved</span>
+                    {% else %}
+                        <span class="status-pending">Pending</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

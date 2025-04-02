@@ -1,17 +1,10 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../static/styles/base.css">
-</head>
-<body>
+{% block content %}
 
     <div class="login-container">
         <h1>Login</h1>
-
+            <a href="/admin_login">admin click here to login</a>
         {% if error %}
             <div class="alert alert-error">{{ error }}</div>
         {% elif success %}
@@ -33,7 +26,6 @@
         </div>
     </div>
 
-</body>
-</html>
+{% endblock %}
 
 

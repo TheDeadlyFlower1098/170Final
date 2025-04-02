@@ -1,10 +1,27 @@
-<form action="/admin_login" method="POST">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" required>
+{% extends "base.html" %}
 
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password_hash" required>
+{% block content %}
+<body>
 
-    <button type="submit">Login</button>
-</form>
+    <div class="login-container">
+        <h1>Admin Login</h1>
+
+        {% if error %}
+            <div class="alert alert-error">{{ error }}</div>
+        {% elif success %}
+            <div class="alert alert-success">{{ success }}</div>
+        {% endif %}
+
+        <!-- Form action should point to the correct route -->
+        <form action="/admin_login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" class="input_field" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password_hash" placeholder="Enter your password" class="input_field" required>
+
+            <input type="submit" value="Login" class="input_submit">
+        </form>
+    </div>
+{% endblock %}
 
