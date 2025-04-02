@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en"
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title><link rel="stylesheet" href="../static/styles/base.css">
-</head>
-<body class="background">
+{% extends "base.html" %}
 
-    <header class="header2">
-        <img class="logo2" src="static/images/f2dc121e-8d95-4cfd-8acd-8d548a843c1c.png" alt="" srcset="">
-        <h1 style="color: aliceblue;">Flask Banking</h1>
-
-    </header>
+{% block content %}
 
     <div class="body1">
         <form class="signup_input" action="/signup" method="POST">
@@ -51,5 +40,4 @@
     </div>
 
 </body>
-</html>
-
+{% endblock %}
