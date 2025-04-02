@@ -28,14 +28,11 @@
                         <a class="nav-link" href="/account">My Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/transactions">Bank Statement</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
                     <!-- Display user's name -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Welcome, {{ session.get('user_name') }}</a>  <!-- Use user_name from session -->
+                        <a class="nav-link" href="#">Welcome, {{ session.get('username') }}</a>  <!-- Use user_name from session -->
                     </li>
                 {% else %}
                     <!-- Not Logged In -->
