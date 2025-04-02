@@ -123,7 +123,7 @@ def login_admin():
 
             if stored_password == password:
                 print("Login successful")
-                return render_template('home.html')
+                return render_template('admin_dashboard.html')
             else:
                 print("Password mismatch")
                 return render_template('admin_login.html', error="Invalid password", success=None)
@@ -225,8 +225,6 @@ def approve_user(user_id):
 def admin_dashboard():
     return render_template('admin_dashboard.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
 @app.route('/admin/view_users', methods=['GET'])
 def view_users():
@@ -239,3 +237,7 @@ def view_users():
     except Exception as e:
         print(f"Error fetching users: {e}")
         return render_template('admin_dashboard.html', error="Could not fetch users.", success=None)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
