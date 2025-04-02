@@ -1,0 +1,55 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+    <!-- Content of the page goes here -->
+    <div class="admin-approval-container">
+        <h1>Approve User Accounts</h1>
+
+        {% if error %}
+            <div class="alert alert-error">{{ error }}</div>
+        {% elif success %}
+            <div class="alert alert-success">{{ success }}</div>
+        {% endif %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                    <th>SSN</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Date Created</th>
+                    <th>Account Number</th>
+                    <th>Approve</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.user_id }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.ssn }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.phone_number }}</td>
+                    <td>{{ user.created_at }}</td>
+                    <td>{{ user.account_number if user.account_number else 'Not assigned' }}</td>
+                    <td>
+                        {% if not user.approved %}
+                        <form action="{{ url_for('approve_user', user_id=user.user_id) }}" method="POST">
+                            <input type="submit" value="Approve" class="btn-approve">
+                        </form>
+                        {% else %}
+                        <span>Approved</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

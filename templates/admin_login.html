@@ -1,10 +1,34 @@
-<form action="/admin_login" method="POST">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" required>
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="../static/styles/base.css">  <!-- Ensure base.css has necessary styles -->
+</head>
+<body>
 
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password_hash" required>
+    <div class="login-container">
+        <h1>Admin Login</h1>
 
-    <button type="submit">Login</button>
-</form>
+        {% if error %}
+            <div class="alert alert-error">{{ error }}</div>
+        {% elif success %}
+            <div class="alert alert-success">{{ success }}</div>
+        {% endif %}
+
+        <!-- Form action should point to the correct route -->
+        <form action="/admin_login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" class="input_field" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password_hash" placeholder="Enter your password" class="input_field" required>
+
+            <input type="submit" value="Login" class="input_submit">
+        </form>
+    </div>
+
+</body>
+</html>
 
