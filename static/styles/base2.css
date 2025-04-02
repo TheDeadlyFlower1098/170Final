@@ -7,7 +7,6 @@ body {
     color: #333;
 }
 
-/* Sidebar Styles */
 .b2-sidebar {
     width: 250px;
     height: 100vh;
@@ -17,7 +16,6 @@ body {
     top: 0;
     left: 0;
     padding-top: 20px;
-    z-index: 100;
 }
 
 .b2-sidebar-header {
@@ -77,7 +75,6 @@ body {
     text-decoration: underline;
 }
 
-/* Content Block */
 .b2-container {
     padding: 30px;
     background-color: white;
@@ -179,4 +176,8 @@ body {
 .b2-alert-error {
     background-color: #e74c3c;
     color: white;
+}
+
+img{
+    width: 30%;
 }

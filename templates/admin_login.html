@@ -1,11 +1,6 @@
-<<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
-    <link rel="stylesheet" href="../static/styles/base.css">  <!-- Ensure base.css has necessary styles -->
-</head>
+{% extends "base.html" %}
+
+{% block content %}
 <body>
 
     <div class="login-container">
@@ -28,7 +23,5 @@
             <input type="submit" value="Login" class="input_submit">
         </form>
     </div>
-
-</body>
-</html>
+{% endblock %}
 
