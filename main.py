@@ -1,8 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from sqlalchemy import create_engine, text
-from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
-import random
 import hashlib
 
 app = Flask(__name__)
@@ -224,6 +221,21 @@ def approve_user(user_id):
         print(f"Error approving user: {e}")
         return redirect(url_for('approve_users_page'), error="Could not approve user.")
 
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    return render_template('admin_dashboard.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/admin/view_users', methods=['GET'])
+def view_users():
+    try:
+        # Query to get all users
+        users = conn.execute(text('SELECT * FROM users')).fetchall()
+
+        return render_template('view_users.html', users=users)
+
+    except Exception as e:
+        print(f"Error fetching users: {e}")
+        return render_template('admin_dashboard.html', error="Could not fetch users.", success=None)
