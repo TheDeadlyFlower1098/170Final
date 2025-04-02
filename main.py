@@ -8,6 +8,13 @@ con_str = "mysql://root:cset155@localhost/bank"
 engine = create_engine(con_str, echo=True)
 conn = engine.connect()
 
+app.secret_key = 'your_secret_key_here'
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+
 @app.route('/signup', methods=['GET'])
 def signup_page():
     return render_template('signup.html')
@@ -54,14 +61,6 @@ def login_user():
         # Get username and password from form
         username = request.form['username']
         password = request.form['password_hash']  # The plain text password entered by the user
-
-        # Print received credentials for debugging
-        print(f"Received username: '{username}'")
-        print(f"Received password: '{password}'")
-
-        # Fetch the user from the database based on username
-        result = conn.execute(
-            text('SELECT password_hash, approved FROM users WHERE username = :username'),
             {'username': username}
         ).fetchone()
 
@@ -84,18 +83,18 @@ def login_user():
 
             # Compare hashed password
             if stored_password_hash == hashed_input_password:
-                print("Login successful")
-                return render_template('home.html')  # Redirect to the home page or another page
+                # Store user_id in session
+                session['user_id'] = user_id  # Save user_id in the session
+                session['username'] = username  # Optionally store the username
+                return redirect(url_for('account'))  # Redirect to account page
             else:
-                print("Password mismatch")
-                return render_template('login.html', error="Invalid password", success=None)
+                return render_template('login.html', error="Invalid password")
+
         else:
-            print("User not found")
-            return render_template('login.html', error="User not found", success=None)
+            return render_template('login.html', error="User not found")
 
     except Exception as e:
-        print(f"Error occurred during login: {e}")
-        return render_template('login.html', error="Login failed. Please try again.", success=None)
+        return render_template('login.html', error="Login failed. Please try again.")
 
     
 @app.route('/admin_login', methods=['GET'])
@@ -135,15 +134,35 @@ def login_admin():
         print(f"Error occurred during login: {e}")
         return render_template('admin_login.html', error="Login failed. Please try again.", success=None)
 
+@app.route('/account')
+def account():
+    if 'user_id' not in session:
+        return redirect(url_for('login_page'))  # Redirect to login page if user is not logged in
 
-@app.route('/')
-def home():
-    return render_template('home.html')
+    user_id = session['user_id']
+    query = text("SELECT * FROM users WHERE user_id = :user_id")
+    result = conn.execute(query, user_id=user_id).fetchone()
 
+    if result:
+        user_info = {
+            'username': result['username'],
+            'first_name': result['first_name'],
+            'last_name': result['last_name'],
+            'ssn': result['ssn'],
+            'address': result['address'],
+            'phone_number': result['phone_number'],
+            'account_number': result['account_number'],
+            'balance': result['balance']
+        }
+        return render_template('account.html', user_info=user_info)
+    else:
+        flash('User not found', 'danger')
+        return redirect(url_for('home'))
+      
 @app.route('/add_money', methods=['GET', 'POST'])
 def add_money():
     if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not logged in
+        return redirect(url_for('login_page'))  # Redirect if not logged in
 
     if request.method == 'POST':
         user_id = session['user_id']
@@ -220,7 +239,7 @@ def approve_user(user_id):
     except Exception as e:
         print(f"Error approving user: {e}")
         return redirect(url_for('approve_users_page'), error="Could not approve user.")
-
+      
 @app.route('/admin/dashboard')
 def admin_dashboard():
     return render_template('admin_dashboard.html')
