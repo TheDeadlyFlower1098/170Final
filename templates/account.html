@@ -1,30 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Account - Flask Banking App</title>
-</head>
-<body>
-    <h1>Welcome, {{ user_info.first_name }} {{ user_info.last_name }}</h1>
-    <p>Username: {{ user_info.username }}</p>
-    <p>Account Number: {{ user_info.account_number }}</p>
-    <p>Balance: ${{ user_info.balance }}</p>
-    <p>SSN: {{ user_info.ssn }}</p>
-    <p>Address: {{ user_info.address }}</p>
-    <p>Phone: {{ user_info.phone_number }}</p>
+{% extends "base.html" %}
 
-    <h2>Add Money to Your Account</h2>
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/account.css') }}">
+
+    <h1>My Account</h1>
+
+    <!-- Display user details -->
+    <div>
+        <h2>Account Information</h2>
+        <p><strong>Username:</strong> {{ user.username if user else 'N/A' }}</p>
+        <p><strong>Full Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>SSN:</strong> {{ user.ssn }}</p>
+        <p><strong>Address:</strong> {{ user.address }}</p>
+        <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+        <p><strong>Account Number:</strong> {{ user.account_number }}</p>
+        <p><strong>Balance:</strong> ${{ user.balance if user else '0.00' }}</p>
+    </div>
+
+    <hr>
+
+    <!-- Add Money Section -->
+    <h2>Add Money</h2>
     <form action="{{ url_for('add_money') }}" method="POST">
         <label for="card_number">Card Number:</label>
-        <input type="text" name="card_number" id="card_number" required><br>
+        <input type="text" id="card_number" name="card_number" required><br>
+
         <label for="expiry_date">Expiry Date:</label>
-        <input type="month" name="expiry_date" id="expiry_date" required><br>
+        <input type="month" id="expiry_date" name="expiry_date" required><br>
+
         <label for="ccv">CCV:</label>
-        <input type="text" name="ccv" id="ccv" required><br>
-        <label for="amount">Amount:</label>
-        <input type="number" name="amount" id="amount" required><br>
+        <input type="text" id="ccv" name="ccv" required><br>
+
+        <label for="amount">Amount ($):</label>
+        <input type="number" id="amount" name="amount" min="1" required><br>
+
         <button type="submit">Add Money</button>
     </form>
-</body>
-</html>
+
+    <hr>
+
+    <!-- Transfer Money Section -->
+    <h2>Send Money</h2>
+    <form action="{{ url_for('transfer_money') }}" method="POST">
+        <label for="recipient_account">Recipient Account Number:</label>
+        <input type="text" id="recipient_account" name="recipient_account" required><br>
+
+        <label for="transfer_amount">Amount ($):</label>
+        <input type="number" id="transfer_amount" name="transfer_amount" min="1" required><br>
+
+        <button type="submit">Send Money</button>
+    </form>
+
+    <p>{{ error }}</p>
+    <p>{{ success }}</p>
+{% endblock %}
