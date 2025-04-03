@@ -229,7 +229,6 @@ def admin_dashboard():
 @app.route('/admin/view_users', methods=['GET'])
 def view_users():
     try:
-        # Query to get all users
         users = conn.execute(text('SELECT * FROM users')).fetchall()
 
         return render_template('view_users.html', users=users)

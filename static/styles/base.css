@@ -57,7 +57,7 @@ body, html {
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    background-color: #0b5cb3;
+    background-color:rgb(198, 95, 114);
     color: white;
     border: none;
     border-radius: 5px;
@@ -74,7 +74,7 @@ body, html {
 }
 
 .input_submit:hover {
-    background-color: #013164;
+    background-color:rgb(196, 112, 128);
 }
 
 .alert {
@@ -101,6 +101,7 @@ body {
 
  .navbar {
         margin-bottom: 20px;
+        background-color: rgb(226, 164, 175);
     }
 
     .container {
@@ -111,7 +112,7 @@ body {
         text-align: center;
         margin-top: 20px;
         padding: 10px;
-        background-color: #f8f9fa;
+        background-color: rgb(226, 164, 175);
     }
 
     .alert {
@@ -124,4 +125,20 @@ body {
         margin-right: 10px;
     }
 
-    
+    .jumbotron{
+        background-color: rgb(226, 164, 175);
+    }
+
+    .nav-link{
+        text-decoration: none;
+        color: white;
+    }
+
+    .nav-link:hover{
+        color: rgb(216, 213, 214);
+    }
+
+.btn-primary{
+    background-color: rgb(226, 164, 175);
+    border-color: black;
+}
