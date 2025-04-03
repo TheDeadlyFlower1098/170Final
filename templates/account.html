@@ -14,9 +14,11 @@
         <p><strong>Address:</strong> {{ user.address }}</p>
         <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
         <p><strong>Account Number:</strong> {{ user.account_number }}</p>
-        <p><strong>Balance:</strong> ${{ user.balance if user else '0.00' }}</p>
     </div>
-
+    <div style="text-align: center;"> 
+        <h1>Account balance</h1>
+        <h3> ${{ user.balance if user else '0.00' }}</h3>
+    </div>
     <hr>
 
     <!-- Add Money Section -->
@@ -34,7 +36,7 @@
         <label for="amount">Amount ($):</label>
         <input type="number" id="amount" name="amount" min="1" required><br>
 
-        <button type="submit">Add Money</button>
+        <button style="background-color: rgb(226, 164, 175);" type="submit">Add Money</button>
     </form>
 
     <hr>
@@ -48,7 +50,7 @@
         <label for="transfer_amount">Amount ($):</label>
         <input type="number" id="transfer_amount" name="transfer_amount" min="1" required><br>
 
-        <button type="submit">Send Money</button>
+        <button style="background-color: rgb(226, 164, 175);" type="submit">Send Money</button>
     </form>
 
     <p>{{ error }}</p>
