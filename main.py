@@ -173,6 +173,78 @@ def account_page():
     else:
         return redirect(url_for('login_page'))
 
+@app.route('/add_money', methods=['POST'])
+def add_money():
+    if 'username' not in session:
+        return redirect(url_for('login_page'))
+
+    username = session['username']
+    amount = request.form.get('amount', type=float)
+
+    if amount is None or amount <= 0:
+        flash("Invalid amount entered.", "error")
+        return redirect(url_for('account_page'))
+
+    # Simulate transaction success (pretend the card is valid)
+    conn.execute(
+        text("UPDATE users SET balance = balance + :amount WHERE username = :username"),
+        {'amount': amount, 'username': username}
+    )
+    conn.commit()
+
+    flash(f"${amount:.2f} has been added to your account!", "success")
+    return redirect(url_for('account_page'))
+
+
+@app.route('/transfer_money', methods=['POST'])
+def transfer_money():
+    if 'username' not in session:
+        return redirect(url_for('login_page'))
+
+    sender_username = session['username']
+    recipient_account = request.form['recipient_account']
+    transfer_amount = request.form.get('transfer_amount', type=float)
+
+    if transfer_amount is None or transfer_amount <= 0:
+        flash("Invalid transfer amount.", "error")
+        return redirect(url_for('account_page'))
+
+    # Check sender's balance
+    sender_result = conn.execute(
+        text("SELECT balance FROM users WHERE username = :username"),
+        {'username': sender_username}
+    ).fetchone()
+
+    if sender_result is None or sender_result.balance < transfer_amount:
+        flash("Insufficient balance for this transaction.", "error")
+        return redirect(url_for('account_page'))
+
+    # Check if recipient exists
+    recipient_result = conn.execute(
+        text("SELECT * FROM users WHERE account_number = :recipient_account"),
+        {'recipient_account': recipient_account}
+    ).fetchone()
+
+    if recipient_result is None:
+        flash("Recipient account does not exist.", "error")
+        return redirect(url_for('account_page'))
+
+    # Perform transaction
+    conn.execute(
+        text("UPDATE users SET balance = balance - :amount WHERE username = :username"),
+        {'amount': transfer_amount, 'username': sender_username}
+    )
+
+    conn.execute(
+        text("UPDATE users SET balance = balance + :amount WHERE account_number = :recipient_account"),
+        {'amount': transfer_amount, 'recipient_account': recipient_account}
+    )
+
+    conn.commit()
+
+    flash(f"Successfully sent ${transfer_amount:.2f} to account {recipient_account}.", "success")
+    return redirect(url_for('account_page'))
+
 # Route for user logout
 @app.route('/logout')
 def logout():
