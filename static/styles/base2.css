@@ -10,7 +10,7 @@ body {
 .b2-sidebar {
     width: 250px;
     height: 100vh;
-    background-color: #2C3E50;
+    background-color:  rgb(226, 164, 175);
     color: #ecf0f1;
     position: fixed;
     top: 0;
@@ -47,7 +47,7 @@ body {
 }
 
 .b2-sidebar-nav a:hover {
-    background-color: #34495e;
+    background-color: rgb(193, 96, 114);
 }
 
 .b2-main-content {
@@ -59,7 +59,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #2980b9;
+    background-color: rgb(193, 96, 114);
     padding: 15px 20px;
     color: white;
     font-size: 18px;
@@ -89,7 +89,7 @@ body {
 }
 
 .b2-footer {
-    background-color: #2C3E50;
+    background-color: rgb(193, 96, 114);
     color: #ecf0f1;
     text-align: center;
     padding: 15px;
@@ -116,7 +116,7 @@ body {
 }
 
 .b2-table th {
-    background-color: #2980b9;
+    background-color: rgb(193, 96, 114);
     color: white;
     font-weight: bold;
 }
@@ -137,11 +137,11 @@ body {
 }
 
 .b2-btn-primary {
-    background-color: #2980b9;
+    background-color:rgb(193, 96, 114);
 }
 
 .b2-btn-primary:hover {
-    background-color: #3498db;
+    background-color: rgb(168, 84, 99);
 }
 
 .b2-btn-secondary {
@@ -160,7 +160,6 @@ body {
     background-color: #c0392b;
 }
 
-/* Alert Styles */
 .b2-alert {
     margin: 20px 0;
     border-radius: 5px;
